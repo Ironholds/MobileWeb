@@ -55,7 +55,7 @@ ggsave(plot = ggplot(overall, aes(x = hour, y = N, type = type, colour = type)) 
   labs(title = "Proportion of mobile and desktop read actions, by hour (localised)",
        x = "Hour",
        y = "Count"),
-  file = file.path(getwd(),"Graphs","Sessions","read_actions_by_hour.png"))
+  file = file.path(getwd(),"Graphs","Rhythms","read_actions_by_hour.png"))
 
 weekend <- data[data$day == "Weekend",j={(.SD[sample(1:.N,50000),])},by = "type"]
 weekend <- weekend[,.N,by = c("hour","type")]
@@ -66,7 +66,7 @@ ggsave(plot = ggplot(weekend, aes(x = hour, y = N, type = type, colour = type)) 
          labs(title = "Proportion of mobile and desktop read actions, by hour (localised)",
               x = "Hour",
               y = "Count"),
-       file = file.path(getwd(),"Graphs","Sessions","read_actions_by_hour_weekend.png"))
+       file = file.path(getwd(),"Graphs","Rhythms","read_actions_by_hour_weekend.png"))
 
 weekday <- data[data$day == "Weekday",j={(.SD[sample(1:.N,50000),])},by = "type"]
 weekday <- weekday[,.N,by = c("hour","type")]
@@ -77,4 +77,4 @@ ggsave(plot = ggplot(weekday, aes(x = hour, y = N, type = type, colour = type)) 
          labs(title = "Proportion of mobile and desktop read actions, by hour (localised)",
               x = "Hour",
               y = "Count"),
-       file = file.path(getwd(),"Graphs","Sessions","read_actions_by_hour_weekday.png"))
+       file = file.path(getwd(),"Graphs","Rhythms","read_actions_by_hour_weekday.png"))
