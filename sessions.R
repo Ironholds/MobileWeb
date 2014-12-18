@@ -71,14 +71,29 @@ ggsave(plot = ggplot(data = results[[2]],
 permTS(results[[3]]$x[results[[3]]$type == "desktop"],results[[3]]$x[results[[3]]$type == "mobile"],"greater")
 write.table(results[[3]], file = file.path(getwd(),"Datasets","Sessions","session_length.tsv"),
             quote = T, sep = "\t", row.names = F)
-ggsave(plot = ggplot(data = results[[2]],
+ggsave(plot = ggplot(data = results[[3]][results[[3]]$x > 0,],
                      aes(x = type, y = x)) + geom_boxplot() + 
          scale_y_log10() + 
          labs(title = "Session length",
               x = "Access method",
-              y = "Session length (seconds"),
+              y = "Session length (seconds)"),
        filename = file.path(getwd(),"Graphs","Sessions",paste0("session_length.png")))
 
 sampled_data <- data[data$userid %in% sample(unique(data$userid[data$type == "mobile"]),100000) | data$userid %in% sample(unique(data$userid[data$type == "desktop"]),100000)]
 sampled_data <- sampled_data[,j = .N, by = c("userid","type")]
 permTS(sampled_data$N[sampled_data$type == "mobile"],sampled_data$N[sampled_data$type == "desktop"],"less")
+write.table(sampled_data[,c("userid") := NULL], file = file.path(getwd(),"Datasets","Sessions","events_per_user.tsv"),
+            quote = T, sep = "\t", row.names = F)
+ggsave(plot = ggplot(data = sampled_data,
+                     aes(x = type, y = N)) + geom_boxplot() + 
+         scale_y_log10() +
+         labs(title = "Events per user",
+              x = "Access method",
+              y = "Events per user"),
+       filename = file.path(getwd(),"Graphs","Sessions",paste0("events_per_user.png")))
+
+#Bounce rate
+bounce <- function(x){
+  return(length(x[x == 1])/length(x))
+}
+c(bounce(results[[2]]$x[results[[2]]$type == "mobile"]),bounce(results[[2]]$x[results[[2]]$type == "desktop"]))
